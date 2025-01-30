@@ -10,17 +10,17 @@ movies = pd.read_csv('movies.csv', encoding='ISO-8859-1')
 
 #-----------
 #Ejercicio 1 resumen estadistico:
-
-#summary_statistics = movies.describe()
-#data_info = movies.info()
-#print(summary_statistics)
-#print(data_info)
-
+"""
+summary_statistics = movies.describe()
+data_info = movies.info()
+print(summary_statistics)
+print(data_info)
+"""
 #-----------
 
 #-----------
-#Ejercicio 2 Investigacion de la distribucion Normal y tablas de frecuencias de las variables cualitativas:
-
+#Ejercicio 3 Investigacion de la distribucion Normal y tablas de frecuencias de las variables cualitativas:
+"""
 movies['castWomenAmount'] = pd.to_numeric(movies['castWomenAmount'], errors='coerce')
 movies['castMenAmount'] = pd.to_numeric(movies['castMenAmount'], errors='coerce')
 
@@ -67,5 +67,49 @@ for var in quantitative_vars:
     
     plt.savefig(f'distribucion_{var}.png')
     plt.close()
+"""
+#-----------
 
+#------PREGUNTAS EJERCICIO 4-----
+#Ejercicio A ¿Cuáles son las 10 películas que contaron con más presupuesto? 
+"""
+top_budget_movies = movies.nlargest(10, 'budget')
+print(top_budget_movies[['originalTitle', 'budget']])
+
+plt.figure(figsize=(12, 6))
+plt.bar(top_budget_movies['originalTitle'], top_budget_movies['budget'], color='blue', alpha=0.7)
+
+plt.title('Presupuesto de las 10 Películas con Más Presupuesto')
+plt.xlabel('Título de la Película')
+plt.ylabel('Presupuesto (en millones)')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+
+
+plt.savefig('Pregunta_A_presupuesto_top_peliculas.png')  
+plt.close() 
+"""
+#-----------
+
+
+
+#-----------
+#Ejercicio B ¿Cuáles son las 10 películas que más ingresos tuvieron?
+"""
+top_revenue_movies = movies.nlargest(10, 'revenue')
+print(top_revenue_movies[['originalTitle', 'revenue']])
+
+plt.figure(figsize=(12, 6))
+plt.bar(top_revenue_movies['originalTitle'], top_revenue_movies['revenue'], color='green', alpha=0.7)
+
+plt.title('Ingresos de las 10 Películas con Más Ingresos')
+plt.xlabel('Título de la Película')
+plt.ylabel('Ingresos (en millones)')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+
+
+plt.savefig('Pregunta_B_ingresos_top_peliculas.png')
+plt.close() 
+"""
 #-----------
