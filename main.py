@@ -174,3 +174,126 @@ plt.close()
 """
 #-----------
 
+
+#-----------
+#Ejercicio F ¿Cuál es el género principal de las 20 películas más recientes? 
+# ¿Cuál es el género principal que predomina en el conjunto de datos? 
+# ¿A qué género principal pertenecen las películas más largas?
+"""
+# Asegurarse de que la columna 'releaseDate' esté en formato de fecha
+movies['releaseDate'] = pd.to_datetime(movies['releaseDate'], errors='coerce')
+
+# Obtener las 20 películas más recientes
+recent_movies = movies.nlargest(20, 'releaseDate')
+
+# Crear un DataFrame con las 20 películas más recientes y su género
+recent_movies_genres = recent_movies[['originalTitle', 'genres']].copy()
+recent_movies_genres['genres'] = recent_movies_genres['genres'].str.split(',').explode().str.strip()
+
+# Contar la cantidad de películas por género en las 20 más recientes
+genre_counts_recent = recent_movies_genres['genres'].value_counts().reset_index()
+genre_counts_recent.columns = ['Género', 'Cantidad']
+
+print("Géneros de las 20 películas más recientes:")
+print(genre_counts_recent)
+
+# Determinar el género principal que predomina en el conjunto de datos
+all_genres = movies['genres'].str.split(',').explode().str.strip()
+main_genre_all = all_genres.value_counts().idxmax()
+print(f"El género principal que predomina en el conjunto de datos es: {main_genre_all}")
+
+# Gráfico de géneros de las 20 películas más recientes
+plt.figure(figsize=(12, 6))
+genre_counts_recent.plot(kind='bar', x='Género', y='Cantidad', color='orange', alpha=0.7)
+plt.title('Géneros de las 20 Películas Más Recientes')
+plt.xlabel('Género')
+plt.ylabel('Número de Películas')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.savefig('generos_20_peliculas_recientes.png')
+plt.close()
+
+# Determinar los 5 géneros principales en el conjunto de datos
+top_5_genres = all_genres.value_counts().nlargest(5).reset_index()
+top_5_genres.columns = ['Género', 'Cantidad']
+
+# Gráfico de los 5 géneros principales en el conjunto de datos
+plt.figure(figsize=(12, 6))
+top_5_genres.plot(kind='bar', x='Género', y='Cantidad', color='blue', alpha=0.7)
+plt.title('Top 5 Géneros Principales en el Conjunto de Datos')
+plt.xlabel('Género')
+plt.ylabel('Número de Películas')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.savefig('top_5_generos_principales.png')
+plt.close()
+
+# Determinar el género de las películas más largas
+longest_movies = movies.nlargest(5, 'runtime')
+longest_genres = longest_movies['genres'].str.split(',').explode().str.strip()
+main_genre_longest = longest_genres.value_counts().idxmax()
+print(f"El género principal de las películas más largas es: {main_genre_longest}")
+
+"""
+#-----------
+
+#Ejercicio F ¿Cuál es el género principal de las 20 películas más recientes? 
+# ¿Cuál es el género principal que predomina en el conjunto de datos? 
+# ¿A qué género principal pertenecen las películas más largas?
+# Asegurarse de que la columna 'releaseDate' esté en formato de fecha
+movies['releaseDate'] = pd.to_datetime(movies['releaseDate'], errors='coerce')
+
+# Obtener las 20 películas más recientes
+recent_movies = movies.nlargest(20, 'releaseDate')
+
+# Crear un DataFrame con las 20 películas más recientes y su género
+recent_movies_genres = recent_movies[['originalTitle', 'genres']].copy()
+recent_movies_genres['genres'] = recent_movies_genres['genres'].str.split(',').explode().str.strip()
+
+# Contar la cantidad de películas por género en las 20 más recientes
+genre_counts_recent = recent_movies_genres['genres'].value_counts().reset_index()
+genre_counts_recent.columns = ['Género', 'Cantidad']
+
+print("Géneros de las 20 películas más recientes:")
+print(genre_counts_recent)
+
+# Determinar el género principal que predomina en el conjunto de datos
+all_genres = movies['genres'].str.split(',').explode().str.strip()
+main_genre_all = all_genres.value_counts().idxmax()
+print(f"El género principal que predomina en el conjunto de datos es: {main_genre_all}")
+
+# Gráfico de géneros de las 20 películas más recientes
+plt.figure(figsize=(12, 6))
+genre_counts_recent.plot(kind='bar', x='Género', y='Cantidad', color='orange', alpha=0.7)
+plt.title('Géneros de las 20 Películas Más Recientes')
+plt.xlabel('Género')
+plt.ylabel('Número de Películas')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.savefig('generos_20_peliculas_recientes.png')
+plt.close()
+
+# Determinar los 5 géneros principales en el conjunto de datos
+top_5_genres = all_genres.value_counts().nlargest(5).reset_index()
+top_5_genres.columns = ['Género', 'Cantidad']
+
+# Gráfico de los 5 géneros principales en el conjunto de datos
+plt.figure(figsize=(12, 6))
+top_5_genres.plot(kind='bar', x='Género', y='Cantidad', color='blue', alpha=0.7)
+plt.title('Top 5 Géneros Principales en el Conjunto de Datos')
+plt.xlabel('Género')
+plt.ylabel('Número de Películas')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.savefig('top_5_generos_principales.png')
+plt.close()
+
+# Determinar el género de las películas más largas
+longest_movies = movies.nlargest(5, 'runtime')
+longest_genres = longest_movies['genres'].str.split(',').explode().str.strip()
+main_genre_longest = longest_genres.value_counts().idxmax()
+print(f"El género principal de las películas más largas es: {main_genre_longest}")
