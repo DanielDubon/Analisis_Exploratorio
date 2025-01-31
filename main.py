@@ -135,3 +135,42 @@ plt.close()
 """
 #-----------
 
+#-----------
+#Ejercicio D ¿Cuál es la peor película de acuerdo a los votos de todos los usuarios?
+"""
+worst_movie = movies.loc[movies['voteCount'].idxmin()]
+print(f"La peor película de acuerdo a los votos es: {worst_movie['originalTitle']} con {worst_movie['voteCount']} votos.")
+"""
+#-----------
+
+#-----------
+#Ejercicio E ¿Cuántas películas se hicieron en cada año? ¿En qué año se hicieron más películas?
+"""
+# Asegurarse de que la columna 'releaseDate' esté en formato de fecha
+movies['releaseDate'] = pd.to_datetime(movies['releaseDate'], errors='coerce')
+
+# Extraer el año de la fecha de lanzamiento
+movies['releaseYear'] = movies['releaseDate'].dt.year
+
+# Contar el número de películas por año
+movies_per_year = movies['releaseYear'].value_counts().sort_index()
+
+# Imprimir el año con más películas
+most_movies_year = movies_per_year.idxmax()
+most_movies_count = movies_per_year.max()
+print(f"El año con más películas es {most_movies_year} con {most_movies_count} películas.")
+
+# Gráfico de barras de películas por año
+plt.figure(figsize=(12, 6))
+movies_per_year.plot(kind='bar', color='teal', alpha=0.7)
+plt.title('Número de Películas por Año')
+plt.xlabel('Año')
+plt.ylabel('Número de Películas')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.savefig('peliculas_por_año.png')
+plt.close()
+"""
+#-----------
+
