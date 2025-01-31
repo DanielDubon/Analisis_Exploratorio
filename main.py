@@ -113,3 +113,25 @@ plt.savefig('Pregunta_B_ingresos_top_peliculas.png')
 plt.close() 
 """
 #-----------
+
+#Ejercicio C ¿Cuál es la película que más votos tuvo?
+"""
+top_5_movies = movies.nlargest(5, 'voteCount')
+print("Las 5 películas con más votos son:")
+for index, row in top_5_movies.iterrows():
+    print(f"{row['originalTitle']} con {row['voteCount']} votos.")
+
+# Gráfico de las 5 películas con más votos
+plt.figure(figsize=(10, 6))
+plt.bar(top_5_movies['originalTitle'], top_5_movies['voteCount'], color='blue', alpha=0.7)
+plt.title('Top 5 Películas con Más Votos')
+plt.xlabel('Título de la Película')
+plt.ylabel('Número de Votos')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+
+plt.savefig('top_5_peliculas_mas_votos.png')
+plt.close()
+"""
+#-----------
+
