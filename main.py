@@ -279,3 +279,53 @@ plt.close()
 #-----------
 
 #-----------
+#Ejercicio H ¿La cantidad de actores influye en los ingresos de las películas? 
+# ¿Se han hecho películas con más actores en los últimos años?
+"""
+# Asegurarse de que la columna 'revenue' y 'actorsAmount' estén en formato numérico
+movies['revenue'] = pd.to_numeric(movies['revenue'], errors='coerce')
+movies['actorsAmount'] = pd.to_numeric(movies['actorsAmount'], errors='coerce')
+
+# Análisis de la relación entre la cantidad de actores y los ingresos
+plt.figure(figsize=(10, 6))
+plt.scatter(movies['actorsAmount'], movies['revenue'], alpha=0.5)
+plt.title('Relación entre la Cantidad de Actores y los Ingresos de las Películas')
+plt.xlabel('Cantidad de Actores')
+plt.ylabel('Ingresos (en millones)')
+plt.xlim(0, movies['actorsAmount'].max())
+plt.ylim(0, movies['revenue'].max())
+plt.tight_layout()
+
+# Añadir línea de regresión
+sns.regplot(x='actorsAmount', y='revenue', data=movies, scatter=False, color='red')
+plt.savefig('relacion_actores_ingresos.png')
+plt.close()
+
+# Imprimir la correlación
+correlation = movies['actorsAmount'].corr(movies['revenue'])
+print(f"La correlación entre la cantidad de actores y los ingresos es: {correlation:.2f}")
+
+# Análisis de la cantidad de actores en los últimos años
+# Asegurarse de que la columna 'releaseDate' esté en formato de fecha
+movies['releaseDate'] = pd.to_datetime(movies['releaseDate'], errors='coerce')
+
+# Extraer el año de la fecha de lanzamiento
+movies['releaseYear'] = movies['releaseDate'].dt.year
+
+# Contar la cantidad de actores por año
+actors_per_year = movies.groupby('releaseYear')['actorsAmount'].mean().reset_index()
+
+# Gráfico de la cantidad promedio de actores por año
+plt.figure(figsize=(12, 6))
+plt.plot(actors_per_year['releaseYear'], actors_per_year['actorsAmount'], marker='o', color='purple')
+plt.title('Cantidad Promedio de Actores por Año')
+plt.xlabel('Año')
+plt.ylabel('Cantidad Promedio de Actores')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.savefig('cantidad_promedio_actores_por_año.png')
+plt.close()
+"""
+#-----------
+
