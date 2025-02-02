@@ -848,3 +848,29 @@ plt.savefig('top_roi_movies.png')
 plt.close()
 """
 #-----------
+
+#-----------
+# Pregunta: ¿Cuál es el idioma original más común en las películas?
+"""
+# Contar la frecuencia de cada idioma en la columna 'originalLanguage'
+language_counts = movies['originalLanguage'].value_counts()
+
+# Obtener el idioma más común
+most_common_language = language_counts.idxmax()
+most_common_count = language_counts.max()
+
+print(f"El idioma original más común en las películas es: '{most_common_language}' con {most_common_count} películas.")
+
+# Visualizar la distribución de idiomas
+plt.figure(figsize=(10, 6))
+language_counts.plot(kind='bar', color='skyblue', edgecolor='black')
+plt.title('Distribución de Idiomas Originales en las Películas')
+plt.xlabel('Idioma Original')
+plt.ylabel('Cantidad de Películas')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('distribucion_idiomas_peliculas.png')
+plt.close()
+"""
+#-----------
+
