@@ -850,7 +850,7 @@ plt.close()
 #-----------
 
 #-----------
-# Pregunta: ¿Cuál es el idioma original más común en las películas?
+# Pregunta u: ¿Cuál es el idioma original más común en las películas?
 """
 # Contar la frecuencia de cada idioma en la columna 'originalLanguage'
 language_counts = movies['originalLanguage'].value_counts()
@@ -870,6 +870,31 @@ plt.ylabel('Cantidad de Películas')
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.savefig('distribucion_idiomas_peliculas.png')
+plt.close()
+"""
+#-----------
+
+#-----------
+# Pregunta v: ¿Cuáles son los 5 idiomas más frecuentes?
+"""
+# Contar la frecuencia de cada idioma en la columna 'originalLanguage'
+language_counts = movies['originalLanguage'].value_counts()
+
+# Obtener los 5 idiomas más comunes
+top_5_languages = language_counts.head(5)
+
+print("Los 5 idiomas más frecuentes en las películas son:")
+print(top_5_languages)
+
+# Visualizar la distribución de los 5 idiomas más frecuentes
+plt.figure(figsize=(10, 6))
+top_5_languages.plot(kind='bar', color='skyblue', edgecolor='black')
+plt.title('Los 5 Idiomas Más Frecuentes en las Películas')
+plt.xlabel('Idioma Original')
+plt.ylabel('Cantidad de Películas')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('top_5_idiomas_frecuentes.png')
 plt.close()
 """
 #-----------
