@@ -388,3 +388,15 @@ plt.close()
 """
 #-----------
 
+#-----------
+# Ejercicio J ¿Quiénes son los directores que hicieron las 20 películas mejor calificadas?
+"""
+# Asegurarse de que la columna 'voteAvg' esté en formato numérico
+movies['voteAvg'] = pd.to_numeric(movies['voteAvg'], errors='coerce')
+
+# Obtener las 20 películas mejor calificadas
+top_rated_movies = movies.nlargest(20, 'voteAvg')
+print("Los directores de las 20 películas mejor calificadas:")
+print(top_rated_movies[['originalTitle', 'voteAvg', 'director']])
+"""
+#-----------
