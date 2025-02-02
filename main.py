@@ -564,3 +564,68 @@ plt.close()
 """
 #-----------
 
+#-----------
+#Ejercicio N ¿Cómo se correlacionan las calificaciones con el éxito comercial?
+"""
+
+movies['revenue'] = pd.to_numeric(movies['revenue'], errors='coerce')
+movies['voteAvg'] = pd.to_numeric(movies['voteAvg'], errors='coerce')
+movies['voteCount'] = pd.to_numeric(movies['voteCount'], errors='coerce')
+
+movies_filtered = movies[
+    (movies['revenue'] > 0) & 
+    (movies['voteAvg'] > 0) & 
+    (movies['voteCount'] > 0)
+].copy()
+
+# Top 10 películas mejor calificadas
+top_rated = movies_filtered.nlargest(10, 'voteAvg')
+plt.figure(figsize=(12, 6))
+plt.bar(range(len(top_rated)), top_rated['voteAvg'], color='blue', alpha=0.7)
+plt.title('Top 10 Películas Mejor Calificadas')
+plt.xlabel('Películas')
+plt.ylabel('Calificación Promedio')
+plt.xticks(range(len(top_rated)), top_rated['originalTitle'], rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig('Preguta_N_top_10_mejores_calificaciones.png')
+plt.close()
+
+# Top 10 películas con mayores ingresos
+top_revenue = movies_filtered.nlargest(10, 'revenue')
+plt.figure(figsize=(12, 6))
+plt.bar(range(len(top_revenue)), top_revenue['revenue'], color='green', alpha=0.7)
+plt.title('Top 10 Películas con Mayores Ingresos')
+plt.xlabel('Películas')
+plt.ylabel('Ingresos')
+plt.xticks(range(len(top_revenue)), top_revenue['originalTitle'], rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig('Pregunta_N_top_10_mayores_ingresos.png')
+plt.close()
+
+# Gráfico de correlación entre calificaciones e ingresos
+plt.figure(figsize=(10, 6))
+plt.scatter(movies_filtered['voteAvg'], movies_filtered['revenue'], alpha=0.5)
+plt.title('Correlación entre Calificaciones e Ingresos')
+plt.xlabel('Calificación Promedio')
+plt.ylabel('Ingresos')
+
+sns.regplot(x='voteAvg', y='revenue', data=movies_filtered, scatter=False, color='red')
+
+correlation = movies_filtered['voteAvg'].corr(movies_filtered['revenue'])
+plt.text(0.05, 0.95, f'Correlación: {correlation:.2f}', 
+         transform=plt.gca().transAxes, 
+         bbox=dict(facecolor='white', alpha=0.8))
+
+plt.tight_layout()
+plt.savefig('Pregunta_N_correlacion_calificaciones_ingresos.png')
+plt.close()
+
+print("\nTop 10 películas mejor calificadas:")
+print(top_rated[['originalTitle', 'voteAvg', 'revenue']].to_string())
+
+print("\nTop 10 películas con mayores ingresos:")
+print(top_revenue[['originalTitle', 'voteAvg', 'revenue']].to_string())
+
+print(f"\nCorrelación entre calificaciones e ingresos: {correlation:.2f}")
+"""
+#-----------
