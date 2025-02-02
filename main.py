@@ -329,3 +329,62 @@ plt.close()
 """
 #-----------
 
+
+#-----------
+#Ejercicio I ¿Es posible que la cantidad de hombres y mujeres en el reparto influya en la popularidad y los ingresos de las películas?
+"""
+
+# Asegurarse de que las columnas 'popularity', 'revenue', 'castWomenAmount' y 'castMenAmount' estén en formato numérico
+movies['popularity'] = pd.to_numeric(movies['popularity'], errors='coerce')
+movies['revenue'] = pd.to_numeric(movies['revenue'], errors='coerce')
+movies['castWomenAmount'] = pd.to_numeric(movies['castWomenAmount'], errors='coerce')
+movies['castMenAmount'] = pd.to_numeric(movies['castMenAmount'], errors='coerce')
+
+# Obtener las 10 películas más populares
+top_popular_movies = movies.nlargest(10, 'popularity')
+print("Las 10 películas más populares:")
+print(top_popular_movies[['originalTitle', 'popularity', 'castWomenAmount', 'castMenAmount']])
+
+# Obtener las 10 películas con mayores ingresos
+top_revenue_movies = movies.nlargest(10, 'revenue')
+print("\nLas 10 películas con mayores ingresos:")
+print(top_revenue_movies[['originalTitle', 'revenue', 'castWomenAmount', 'castMenAmount']])
+
+# Análisis de la relación entre la cantidad de hombres y mujeres en el reparto y la popularidad
+plt.figure(figsize=(10, 6))
+plt.scatter(top_popular_movies['castWomenAmount'], top_popular_movies['popularity'], alpha=0.5, label='Mujeres')
+plt.scatter(top_popular_movies['castMenAmount'], top_popular_movies['popularity'], alpha=0.5, label='Hombres')
+plt.title('Relación entre la Cantidad de Hombres y Mujeres en el Reparto y la Popularidad')
+plt.xlabel('Cantidad de Actores')
+plt.ylabel('Popularidad')
+plt.xlim(0, max(top_popular_movies['castWomenAmount'].max(), top_popular_movies['castMenAmount'].max()))
+plt.ylim(0, top_popular_movies['popularity'].max())
+plt.legend()
+plt.tight_layout()
+
+# Añadir líneas de regresión
+sns.regplot(x='castWomenAmount', y='popularity', data=top_popular_movies, scatter=False, color='blue')
+sns.regplot(x='castMenAmount', y='popularity', data=top_popular_movies, scatter=False, color='orange')
+plt.savefig('relacion_genero_popularidad_top.png')
+plt.close()
+
+# Análisis de la relación entre la cantidad de hombres y mujeres en el reparto y los ingresos
+plt.figure(figsize=(10, 6))
+plt.scatter(top_revenue_movies['castWomenAmount'], top_revenue_movies['revenue'], alpha=0.5, label='Mujeres')
+plt.scatter(top_revenue_movies['castMenAmount'], top_revenue_movies['revenue'], alpha=0.5, label='Hombres')
+plt.title('Relación entre la Cantidad de Hombres y Mujeres en el Reparto y los Ingresos')
+plt.xlabel('Cantidad de Actores')
+plt.ylabel('Ingresos (en millones)')
+plt.xlim(0, max(top_revenue_movies['castWomenAmount'].max(), top_revenue_movies['castMenAmount'].max()))
+plt.ylim(0, top_revenue_movies['revenue'].max())
+plt.legend()
+plt.tight_layout()
+
+# Añadir líneas de regresión
+sns.regplot(x='castWomenAmount', y='revenue', data=top_revenue_movies, scatter=False, color='blue')
+sns.regplot(x='castMenAmount', y='revenue', data=top_revenue_movies, scatter=False, color='orange')
+plt.savefig('relacion_genero_ingresos_top.png')
+plt.close()
+"""
+#-----------
+
