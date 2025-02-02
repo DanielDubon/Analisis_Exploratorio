@@ -490,3 +490,77 @@ top_roi = movies_filtered_roi.nlargest(5, 'ROI')[['originalTitle', 'budget', 're
 print(top_roi)
 """
 #-----------
+
+#-----------
+#Ejercicio L, M ¿Se asocian ciertos meses de lanzamiento con mejores ingresos? 
+"""
+
+movies['releaseDate'] = pd.to_datetime(movies['releaseDate'], errors='coerce')
+movies['revenue'] = pd.to_numeric(movies['revenue'], errors='coerce')
+movies['releaseMonth'] = movies['releaseDate'].dt.month
+
+# Calcular ingresos promedio por mes
+monthly_revenue = movies.groupby('releaseMonth')['revenue'].agg(['mean', 'count']).reset_index()
+monthly_revenue.columns = ['Mes', 'Ingreso_Promedio', 'Cantidad_Peliculas']
+
+
+meses = {1:'Enero', 2:'Febrero', 3:'Marzo', 4:'Abril', 5:'Mayo', 6:'Junio',
+         7:'Julio', 8:'Agosto', 9:'Septiembre', 10:'Octubre', 11:'Noviembre', 12:'Diciembre'}
+monthly_revenue['Nombre_Mes'] = monthly_revenue['Mes'].map(meses)
+
+# Gráfico de ingresos promedio por mes
+plt.figure(figsize=(12, 6))
+plt.bar(monthly_revenue['Nombre_Mes'], monthly_revenue['Ingreso_Promedio'], color='blue', alpha=0.7)
+plt.title('Ingresos Promedio por Mes de Lanzamiento')
+plt.xlabel('Mes')
+plt.ylabel('Ingreso Promedio')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig('Pregunta_LM_ingresos_promedio_por_mes.png')
+plt.close()
+
+# Gráfico de cantidad de películas por mes
+plt.figure(figsize=(12, 6))
+plt.bar(monthly_revenue['Nombre_Mes'], monthly_revenue['Cantidad_Peliculas'], color='green', alpha=0.7)
+plt.title('Cantidad de Películas Lanzadas por Mes')
+plt.xlabel('Mes')
+plt.ylabel('Cantidad de Películas')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig('Pregunta_L_cantidad_peliculas_por_mes.png')
+plt.close()
+
+# Top 5 meses con mejores ingresos promedio
+print("\nTop 5 meses con mejores ingresos promedio:")
+top_months = monthly_revenue.nlargest(5, 'Ingreso_Promedio')[['Nombre_Mes', 'Ingreso_Promedio', 'Cantidad_Peliculas']]
+print(top_months)
+
+
+# la película más exitosa de cada mes
+top_movies_per_month = []
+for mes in range(1, 13):
+    top_movie = movies[movies['releaseMonth'] == mes].nlargest(1, 'revenue')
+    if not top_movie.empty:
+        top_movies_per_month.append({
+            'Mes': meses[mes],
+            'Película': top_movie['originalTitle'].iloc[0],
+            'Ingresos': top_movie['revenue'].iloc[0]
+        })
+
+top_movies_df = pd.DataFrame(top_movies_per_month)
+print("\nPelícula más exitosa de cada mes:")
+print(top_movies_df)
+
+# Boxplot de ingresos por mes para ver la distribución
+plt.figure(figsize=(15, 8))
+sns.boxplot(x='releaseMonth', y='revenue', data=movies)
+plt.title('Distribución de Ingresos por Mes')
+plt.xlabel('Mes')
+plt.ylabel('Ingresos')
+plt.xticks(range(12), [meses[i] for i in range(1, 13)], rotation=45)
+plt.tight_layout()
+plt.savefig('Pregunta_L_distribucion_ingresos_por_mes.png')
+plt.close()
+"""
+#-----------
+
