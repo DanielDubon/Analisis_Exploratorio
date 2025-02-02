@@ -753,34 +753,6 @@ plt.close()
 # Pregunta r: ¿Qué actores tienen más películas?
 """
 # Asegurarse de que la columna 'actors' esté en formato de lista
-# Suponiendo que 'actors' es una cadena de texto con los nombres de los actores separados por comas
-movies['actors'] = movies['actors'].str.split(',')
-
-# Explotar la columna 'actors' para tener un registro por actor
-actors_exploded = movies.explode('actors')
-
-# Contar la cantidad de películas por actor
-actor_counts = actors_exploded['actors'].value_counts()
-
-# Obtener los 10 actores con más películas
-top_actors = actor_counts.head(10)
-print("Los 10 actores con más películas:")
-print(top_actors)
-
-# Visualizar la cantidad de películas por actor
-plt.figure(figsize=(10, 6))
-top_actors.plot(kind='bar', color='skyblue', edgecolor='black')
-plt.title('Los 10 Actores con Más Películas')
-plt.xlabel('Actores')
-plt.ylabel('Cantidad de Películas')
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.savefig('top_actores_peliculas.png')
-plt.close()
-"""
-#-----------
-
-# Asegurarse de que la columna 'actors' esté en formato de lista
 # Suponiendo que 'actors' es una cadena de texto con los nombres de los actores separados por comas o '|'
 movies['actors'] = movies['actors'].str.replace('|', ',')  # Reemplazar '|' por ',' para unificar el separador
 movies['actors'] = movies['actors'].str.split(',')  # Convertir la cadena en una lista
@@ -819,3 +791,6 @@ plt.xticks(rotation=45, ha='right')  # Rotar etiquetas y alinearlas a la derecha
 plt.tight_layout()  # Ajustar el layout
 plt.savefig('top_actores_peliculas.png')
 plt.close()
+"""
+#-----------
+
