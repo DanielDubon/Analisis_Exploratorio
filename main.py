@@ -727,25 +727,24 @@ plt.close()
 """
 #-----------
 
-# Asegurarse de que las columnas 'revenue' y 'actorsPopularity' estén en formato numérico
-movies['revenue'] = pd.to_numeric(movies['revenue'], errors='coerce')
-movies['actorsPopularity'] = pd.to_numeric(movies['actorsPopularity'], errors='coerce')
+#-----------
+# Pregunta q: ¿Cuál es la duración promedio de las películas en el conjunto de datos?
+"""
+# Asegurarse de que la columna 'runtime' esté en formato numérico
+movies['runtime'] = pd.to_numeric(movies['runtime'], errors='coerce')
 
-# Calcular la correlación entre la popularidad del elenco y los ingresos
-correlation = movies['actorsPopularity'].corr(movies['revenue'])
-print(f"La correlación entre la popularidad del elenco y el éxito de taquilla es: {correlation:.2f}")
+# Calcular la duración promedio
+average_runtime = movies['runtime'].mean()
+print(f"La duración promedio de las películas es: {average_runtime:.2f} minutos")
 
-# Visualizar la relación
+# Visualizar la distribución de la duración
 plt.figure(figsize=(10, 6))
-plt.scatter(movies['actorsPopularity'], movies['revenue'], alpha=0.5)
-plt.title('Relación entre la Popularidad del Elenco y el Éxito de Taquilla')
-plt.xlabel('Popularidad del Elenco')
-plt.ylabel('Ingresos (en millones)')
-plt.xlim(0, movies['actorsPopularity'].max())
-plt.ylim(0, movies['revenue'].max())
+plt.hist(movies['runtime'].dropna(), bins=30, color='skyblue', edgecolor='black')
+plt.title('Distribución de la Duración de las Películas')
+plt.xlabel('Duración (minutos)')
+plt.ylabel('Frecuencia')
 plt.tight_layout()
-
-# Añadir línea de regresión
-sns.regplot(x='actorsPopularity', y='revenue', data=movies, scatter=False, color='blue')
-plt.savefig('relacion_popularidad_elenco_ingresos.png')
+plt.savefig('distribucion_duracion_peliculas.png')
 plt.close()
+"""
+#-----------
