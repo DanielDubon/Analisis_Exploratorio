@@ -400,3 +400,93 @@ print("Los directores de las 20 películas mejor calificadas:")
 print(top_rated_movies[['originalTitle', 'voteAvg', 'director']])
 """
 #-----------
+
+#-----------
+#Ejercicio K ¿Cómo se correlacionan los presupuestos con los ingresos? ¿Los altos presupuestos significan altos ingresos?
+"""
+
+movies['revenue'] = pd.to_numeric(movies['revenue'], errors='coerce')
+movies['budget'] = pd.to_numeric(movies['budget'], errors='coerce')
+movies_filtered = movies[(movies['budget'] > 0) & (movies['revenue'] > 0)].copy()
+
+# Top 5 películas con mayor presupuesto
+print("\nTop 5 películas con mayor presupuesto:")
+top_budget = movies_filtered.nlargest(5, 'budget')[['originalTitle', 'budget', 'revenue']]
+print(top_budget)
+
+# Gráfico de las 5 películas con mayor presupuesto
+plt.figure(figsize=(12, 6))
+plt.bar(top_budget['originalTitle'], top_budget['budget'], color='blue', alpha=0.7)
+plt.title('Top 5 Películas con Mayor Presupuesto')
+plt.xlabel('Título de la Película')
+plt.ylabel('Presupuesto')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig('Pregunta_K_top_5_presupuesto.png')
+plt.close()
+
+# Top 5 películas con mayores ganancias
+print("\nTop 5 películas con mayores ganancias:")
+top_revenue = movies_filtered.nlargest(5, 'revenue')[['originalTitle', 'budget', 'revenue']]
+print(top_revenue)
+
+# Gráfico de las 5 películas con mayores ganancias
+plt.figure(figsize=(12, 6))
+plt.bar(top_revenue['originalTitle'], top_revenue['revenue'], color='green', alpha=0.7)
+plt.title('Top 5 Películas con Mayores Ganancias')
+plt.xlabel('Título de la Película')
+plt.ylabel('Ganancias')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig('Pregunta_K_top_5_ganancias.png')
+plt.close()
+
+# Análisis de la relación entre presupuesto e ingresos
+plt.figure(figsize=(12, 8))
+plt.scatter(movies_filtered['budget'], movies_filtered['revenue'], alpha=0.5)
+plt.title('Correlación entre Presupuesto e Ingresos')
+plt.xlabel('Presupuesto')
+plt.ylabel('Ingresos')
+plt.tight_layout()
+
+# Añadir línea de regresión
+sns.regplot(x='budget', y='revenue', data=movies_filtered, scatter=False, color='red')
+
+# Añadir texto con la correlación
+correlation = movies_filtered['budget'].corr(movies_filtered['revenue'])
+plt.text(0.05, 0.95, f'Correlación: {correlation:.2f}', 
+         transform=plt.gca().transAxes, 
+         bbox=dict(facecolor='white', alpha=0.8))
+
+plt.savefig('Pregunta_K_correlacion_presupuesto_ingresos.png')
+plt.close()
+
+# Calcular ROI solo para películas con presupuesto > 0
+movies_filtered['ROI'] = (movies_filtered['revenue'] - movies_filtered['budget']) / movies_filtered['budget']
+
+# Remover valores extremos del ROI para mejor visualización
+roi_q1 = movies_filtered['ROI'].quantile(0.05)
+roi_q3 = movies_filtered['ROI'].quantile(0.95)
+movies_filtered_roi = movies_filtered[
+    (movies_filtered['ROI'] >= roi_q1) & 
+    (movies_filtered['ROI'] <= roi_q3)
+]
+
+# Gráfico de ROI vs Presupuesto
+plt.figure(figsize=(12, 8))
+plt.scatter(movies_filtered_roi['budget'], movies_filtered_roi['ROI'], alpha=0.5)
+plt.title('ROI vs Presupuesto (sin valores extremos)')
+plt.xlabel('Presupuesto')
+plt.ylabel('ROI (Return on Investment)')
+plt.tight_layout()
+
+plt.savefig('Pregunta_K_roi_vs_presupuesto.png')
+plt.close()
+
+# Imprimir estadísticas relevantes
+print(f"\nLa correlación entre presupuesto e ingresos es: {correlation:.2f}")
+print("\nTop 5 películas con mayor ROI (excluyendo valores extremos):")
+top_roi = movies_filtered_roi.nlargest(5, 'ROI')[['originalTitle', 'budget', 'revenue', 'ROI']]
+print(top_roi)
+"""
+#-----------
