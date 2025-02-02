@@ -822,3 +822,29 @@ plt.close()
 """
 #-----------
 
+#-----------
+# Pregunta t: ¿Qué películas han tenido el mayor cambio en ingresos en comparación con su presupuesto?
+"""
+# Asegurarse de que las columnas 'budget' y 'revenue' estén en formato numérico
+movies['budget'] = pd.to_numeric(movies['budget'], errors='coerce')
+movies['revenue'] = pd.to_numeric(movies['revenue'], errors='coerce')
+
+# Calcular el cambio en ingresos (ROI)
+movies['roi'] = movies['revenue'] - movies['budget']
+
+# Obtener las 10 películas con el mayor cambio en ingresos
+top_roi_movies = movies.nlargest(10, 'roi')[['originalTitle', 'budget', 'revenue', 'roi']]
+print("Las 10 películas con el mayor cambio en ingresos en comparación con su presupuesto:")
+print(top_roi_movies)
+
+# Visualizar el cambio en ingresos
+plt.figure(figsize=(10, 6))
+plt.barh(top_roi_movies['originalTitle'], top_roi_movies['roi'], color='skyblue', edgecolor='black')
+plt.title('Las 10 Películas con Mayor Cambio en Ingresos')
+plt.xlabel('Cambio en Ingresos (ROI)')
+plt.ylabel('Películas')
+plt.tight_layout()
+plt.savefig('top_roi_movies.png')
+plt.close()
+"""
+#-----------
