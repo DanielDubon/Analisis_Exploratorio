@@ -794,3 +794,31 @@ plt.close()
 """
 #-----------
 
+#-----------
+# Pregunta s: ¿Cuál es la relación entre el presupuesto y la calificación de las películas?
+"""
+# Asegurarse de que las columnas 'budget' y 'voteAvg' estén en formato numérico
+movies['budget'] = pd.to_numeric(movies['budget'], errors='coerce')
+movies['voteAvg'] = pd.to_numeric(movies['voteAvg'], errors='coerce')
+
+# Calcular la correlación entre el presupuesto y la calificación
+correlation = movies['budget'].corr(movies['voteAvg'])
+print(f"La correlación entre el presupuesto y la calificación de las películas es: {correlation:.2f}")
+
+# Visualizar la relación
+plt.figure(figsize=(10, 6))
+plt.scatter(movies['budget'], movies['voteAvg'], alpha=0.5)
+plt.title('Relación entre el Presupuesto y la Calificación de las Películas')
+plt.xlabel('Presupuesto (en millones)')
+plt.ylabel('Calificación Promedio')
+plt.xlim(0, movies['budget'].max())
+plt.ylim(0, 10)  # Asumiendo que la calificación está en una escala de 0 a 10
+plt.tight_layout()
+
+# Añadir línea de regresión
+sns.regplot(x='budget', y='voteAvg', data=movies, scatter=False, color='blue')
+plt.savefig('relacion_presupuesto_calificacion.png')
+plt.close()
+"""
+#-----------
+
