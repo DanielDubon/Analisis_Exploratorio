@@ -699,3 +699,53 @@ for strategy in movies['marketing_strategy'].unique():
 #-----------
 
 
+#-----------
+# Pregunta P ¿La popularidad del elenco está directamente correlacionada con el éxito de taquilla?
+"""
+# Asegurarse de que las columnas 'revenue' y 'actorsPopularity' estén en formato numérico
+movies['revenue'] = pd.to_numeric(movies['revenue'], errors='coerce')
+movies['actorsPopularity'] = pd.to_numeric(movies['actorsPopularity'], errors='coerce')
+
+# Calcular la correlación entre la popularidad del elenco y los ingresos
+correlation = movies['actorsPopularity'].corr(movies['revenue'])
+print(f"La correlación entre la popularidad del elenco y el éxito de taquilla es: {correlation:.2f}")
+
+# Visualizar la relación
+plt.figure(figsize=(10, 6))
+plt.scatter(movies['actorsPopularity'], movies['revenue'], alpha=0.5)
+plt.title('Relación entre la Popularidad del Elenco y el Éxito de Taquilla')
+plt.xlabel('Popularidad del Elenco')
+plt.ylabel('Ingresos (en millones)')
+plt.xlim(0, movies['actorsPopularity'].max())
+plt.ylim(0, movies['revenue'].max())
+plt.tight_layout()
+
+# Añadir línea de regresión
+sns.regplot(x='actorsPopularity', y='revenue', data=movies, scatter=False, color='blue')
+plt.savefig('relacion_popularidad_elenco_ingresos.png')
+plt.close()
+"""
+#-----------
+
+# Asegurarse de que las columnas 'revenue' y 'actorsPopularity' estén en formato numérico
+movies['revenue'] = pd.to_numeric(movies['revenue'], errors='coerce')
+movies['actorsPopularity'] = pd.to_numeric(movies['actorsPopularity'], errors='coerce')
+
+# Calcular la correlación entre la popularidad del elenco y los ingresos
+correlation = movies['actorsPopularity'].corr(movies['revenue'])
+print(f"La correlación entre la popularidad del elenco y el éxito de taquilla es: {correlation:.2f}")
+
+# Visualizar la relación
+plt.figure(figsize=(10, 6))
+plt.scatter(movies['actorsPopularity'], movies['revenue'], alpha=0.5)
+plt.title('Relación entre la Popularidad del Elenco y el Éxito de Taquilla')
+plt.xlabel('Popularidad del Elenco')
+plt.ylabel('Ingresos (en millones)')
+plt.xlim(0, movies['actorsPopularity'].max())
+plt.ylim(0, movies['revenue'].max())
+plt.tight_layout()
+
+# Añadir línea de regresión
+sns.regplot(x='actorsPopularity', y='revenue', data=movies, scatter=False, color='blue')
+plt.savefig('relacion_popularidad_elenco_ingresos.png')
+plt.close()
