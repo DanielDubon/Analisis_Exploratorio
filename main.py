@@ -629,3 +629,73 @@ print(top_revenue[['originalTitle', 'voteAvg', 'revenue']].to_string())
 print(f"\nCorrelación entre calificaciones e ingresos: {correlation:.2f}")
 """
 #-----------
+
+#-----------
+#Ejercicio O ¿Qué estrategias de marketing, como videos promocionales o páginas oficiales, generan mejores resultados?
+"""
+movies['revenue'] = pd.to_numeric(movies['revenue'], errors='coerce')
+movies['video'] = movies['video'].astype(bool)
+movies['homePage'] = movies['homePage'].notna()  # True si tiene página oficial
+
+# Crear grupos para el análisis
+movies['marketing_strategy'] = 'Sin estrategia'
+movies.loc[movies['video'], 'marketing_strategy'] = 'Solo Video'
+movies.loc[movies['homePage'], 'marketing_strategy'] = 'Solo Página Web'
+movies.loc[(movies['video']) & (movies['homePage']), 'marketing_strategy'] = 'Ambas estrategias'
+
+# Calcular estadísticas por estrategia de marketing
+marketing_stats = movies.groupby('marketing_strategy').agg({
+    'revenue': ['mean', 'count'],
+    'voteAvg': 'mean'
+}).round(2)
+
+print("\nEstadísticas por estrategia de marketing:")
+print(marketing_stats)
+
+# Gráfico de ingresos promedio por estrategia
+plt.figure(figsize=(12, 6))
+avg_revenue = movies.groupby('marketing_strategy')['revenue'].mean()
+plt.bar(avg_revenue.index, avg_revenue.values, color='blue', alpha=0.7)
+plt.title('Ingresos Promedio por Estrategia de Marketing')
+plt.xlabel('Estrategia de Marketing')
+plt.ylabel('Ingresos Promedio')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig('Pregunta_O_ingresos_por_estrategia.png')
+plt.close()
+
+# Gráfico de cantidad de películas por estrategia
+plt.figure(figsize=(12, 6))
+movies_count = movies['marketing_strategy'].value_counts()
+plt.bar(movies_count.index, movies_count.values, color='green', alpha=0.7)
+plt.title('Cantidad de Películas por Estrategia de Marketing')
+plt.xlabel('Estrategia de Marketing')
+plt.ylabel('Cantidad de Películas')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig('Pregunta_O_cantidad_por_estrategia.png')
+plt.close()
+
+# Análisis de calificaciones promedio por estrategia
+plt.figure(figsize=(12, 6))
+avg_rating = movies.groupby('marketing_strategy')['voteAvg'].mean()
+plt.bar(avg_rating.index, avg_rating.values, color='purple', alpha=0.7)
+plt.title('Calificación Promedio por Estrategia de Marketing')
+plt.xlabel('Estrategia de Marketing')
+plt.ylabel('Calificación Promedio')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig('Pregunta_O_calificacion_por_estrategia.png')
+plt.close()
+
+# Top 5 películas más exitosas por cada estrategia
+print("\nTop 5 películas más exitosas por estrategia:")
+for strategy in movies['marketing_strategy'].unique():
+    print(f"\n{strategy}:")
+    top_5 = movies[movies['marketing_strategy'] == strategy].nlargest(5, 'revenue')
+    print(top_5[['originalTitle', 'revenue', 'voteAvg']].to_string())
+
+"""
+#-----------
+
+
